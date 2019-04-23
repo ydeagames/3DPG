@@ -19,6 +19,7 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Sprite2D.h" />
+    <ClInclude Include="DebugFont.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -28,6 +29,7 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Sprite2D.cpp" />
+    <ClCompile Include="DebugFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

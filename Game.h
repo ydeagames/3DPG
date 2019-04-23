@@ -10,6 +10,10 @@
 #include "SpriteBatch.h"
 #include "SimpleMath.h"
 #include "Sprite2D.h"
+#include "CommonStates.h"
+#include "PrimitiveBatch.h"
+#include "Effects.h"
+#include "VertexTypes.h"
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -57,4 +61,16 @@ private:
     DX::StepTimer                           m_timer;
 
 	Sprite2D sprite;
+
+	// コモンステート
+	std::unique_ptr<DirectX::CommonStates> m_state;
+	// プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionNormal>> m_pPrimitiveBatch;
+	// ベーシックエフェクト
+	std::unique_ptr<DirectX::BasicEffect> m_pBasicEffect;
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_pInputLayout;
+
+	// ライン用プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_pLinePrimitiveBatch;
 };
