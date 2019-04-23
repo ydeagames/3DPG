@@ -15,21 +15,6 @@ using namespace DirectX::SimpleMath;
 
 using Microsoft::WRL::ComPtr;
 
-// 頂点インデックス
-static uint16_t s_indices[] =
-{
-	0, 1, 2,
-	2, 1, 3,
-};
-// 頂点座標テーブル
-static VertexPositionNormal s_vertices[] =
-{
-	{ SimpleMath::Vector3(-1.0f, 1.0f, 0.0f), SimpleMath::Vector3(0.0f, 0.0f, 1.0f) },
-	{ SimpleMath::Vector3(-1.0f,-1.0f, 0.0f), SimpleMath::Vector3(0.0f, 0.0f, 1.0f) },
-	{ SimpleMath::Vector3(1.0f, 1.0f, 0.0f), SimpleMath::Vector3(0.0f, 0.0f, 1.0f) },
-	{ SimpleMath::Vector3(1.0f,-1.0f, 0.0f), SimpleMath::Vector3(0.0f, 0.0f, 1.0f) },
-};
-
 Game::Game() noexcept(false)
 {
     m_deviceResources = std::make_unique<DX::DeviceResources>();
@@ -96,6 +81,25 @@ void Game::Render()
 
 	// --------------------------------------------------------------------------
 	
+	// 頂点インデックス
+	static uint16_t s_indices[] =
+	{
+		0, 1, 2,
+		0, 2, 3,
+		0, 3, 4,
+		0, 4, 5,
+	};
+	// 頂点座標テーブル
+	static VertexPositionNormal s_vertices[] =
+	{
+		{ Vector3::Transform(Vector3::Up, Matrix::CreateRotationZ(XMConvertToRadians(60 * 0))), Vector3::Backward },
+		{ Vector3::Transform(Vector3::Up, Matrix::CreateRotationZ(XMConvertToRadians(60 * 1))), Vector3::Backward },
+		{ Vector3::Transform(Vector3::Up, Matrix::CreateRotationZ(XMConvertToRadians(60 * 2))), Vector3::Backward },
+		{ Vector3::Transform(Vector3::Up, Matrix::CreateRotationZ(XMConvertToRadians(60 * 3))), Vector3::Backward },
+		{ Vector3::Transform(Vector3::Up, Matrix::CreateRotationZ(XMConvertToRadians(60 * 4))), Vector3::Backward },
+		{ Vector3::Transform(Vector3::Up, Matrix::CreateRotationZ(XMConvertToRadians(60 * 5))), Vector3::Backward },
+	};
+
 	// TODO: Add your rendering code here.
 	sprite.Draw();
 
@@ -138,17 +142,17 @@ void Game::Render()
 	// 描画開始
 	m_pPrimitiveBatch->Begin();
 	// 頂点情報から描画
-	m_pPrimitiveBatch->DrawIndexed(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST, s_indices, 6, s_vertices, 4);
+	m_pPrimitiveBatch->DrawIndexed(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST, s_indices, 12, s_vertices, 6);
 	// 描画終了
 	m_pPrimitiveBatch->End();
 
 	m_pLinePrimitiveBatch->Begin();
-	VertexPositionColor v1(SimpleMath::Vector3(0.f, 0.5f, 0.5f), Colors::White);
-	VertexPositionColor v2(SimpleMath::Vector3(0.5f, -0.5f, 0.5f), Colors::White);
+	VertexPositionColor v1(Vector3(0.f, 0.5f, 0.5f) + Vector3::Right * 4, Colors::White);
+	VertexPositionColor v2(Vector3(0.5f, -0.5f, 0.5f) + Vector3::Right * 4, Colors::White);
 	m_pLinePrimitiveBatch->DrawLine(v1, v2);
 	m_pLinePrimitiveBatch->End();
 
-	DebugFont::GetInstance()->print(Vector2::Zero, L"SUSHI");
+	DebugFont::GetInstance()->print(Vector2::Zero, L"FPS: %d", m_timer.GetFramesPerSecond());
 	DebugFont::GetInstance()->draw();
 
 	// --------------------------------------------------------------------------
