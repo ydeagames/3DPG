@@ -15,6 +15,14 @@
 #include "Effects.h"
 #include "VertexTypes.h"
 
+#include "Mouse.h"
+#include "Keyboard.h"
+#include "GeometricPrimitive.h"
+#include <Model.h>
+
+class DebugCamera;
+class GridFloor;
+
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game : public DX::IDeviceNotify
@@ -22,6 +30,7 @@ class Game : public DX::IDeviceNotify
 public:
 
     Game() noexcept(false);
+	~Game();
 
     // Initialization and management
     void Initialize(HWND window, int width, int height);
@@ -73,4 +82,24 @@ private:
 
 	// ライン用プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_pLinePrimitiveBatch;
+
+	// 射影行列
+	DirectX::SimpleMath::Matrix				m_projection;
+
+	// マウス
+	std::unique_ptr<DirectX::Mouse>			m_pMouse;
+
+	// デバッグカメラ
+	DebugCamera*							m_pDebugCamera;
+	// グリッド床
+	GridFloor*								m_pGridFloor;
+	// コモンステート
+	std::unique_ptr<DirectX::CommonStates>	m_pState;
+
+	// ジオメトリプリミティブ
+	std::unique_ptr<DirectX::GeometricPrimitive> m_pGeometricPrimitive[3];
+
+	// モデル
+	std::unique_ptr<DirectX::Model> m_pModel;
+
 };

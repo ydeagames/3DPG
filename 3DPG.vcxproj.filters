@@ -20,6 +20,8 @@
     </ClInclude>
     <ClInclude Include="Sprite2D.h" />
     <ClInclude Include="DebugFont.h" />
+    <ClInclude Include="DebugCamera.h" />
+    <ClInclude Include="GridFloor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -30,6 +32,8 @@
     </ClCompile>
     <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="DebugFont.cpp" />
+    <ClCompile Include="GridFloor.cpp" />
+    <ClCompile Include="DebugCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -38,10 +42,21 @@
     <Image Include="directx.ico">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="floor.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest">
       <Filter>Assets</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="box.FBX">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="floor.fbx">
+      <Filter>Assets</Filter>
+    </None>
   </ItemGroup>
 </Project>
