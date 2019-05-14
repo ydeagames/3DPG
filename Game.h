@@ -102,4 +102,10 @@ private:
 	// ƒ‚ƒfƒ‹
 	std::unique_ptr<DirectX::Model> m_pModel;
 
+	// ƒ‚ƒfƒ‹
+	std::unique_ptr<DirectX::Model> m_pModel2;
+
+	// ƒ‚ƒfƒ‹
+	std::unique_ptr<DirectX::Model> m_pModel3;
+
 };

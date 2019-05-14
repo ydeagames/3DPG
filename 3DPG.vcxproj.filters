@@ -52,11 +52,20 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <None Include="box.FBX">
+    <MeshContentTask Include="box.FBX">
       <Filter>Assets</Filter>
-    </None>
-    <None Include="floor.fbx">
+    </MeshContentTask>
+    <MeshContentTask Include="floor.fbx">
       <Filter>Assets</Filter>
-    </None>
+    </MeshContentTask>
+    <MeshContentTask Include="FloorOriginal.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="DOGA_Model1.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Fine_Sea2.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

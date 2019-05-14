@@ -76,7 +76,19 @@ void Game::Initialize(HWND window, int width, int height)
 	// ファイルを指定してモデルデータ読み込み
 	m_pModel = DirectX::Model::CreateFromCMO(
 		m_deviceResources->GetD3DDevice(),
-		L"Resources/Models/floor.cmo",
+		L"Resources/Models/FloorOriginal.cmo",
+		*factory
+	);
+	// ファイルを指定してモデルデータ読み込み
+	m_pModel2 = DirectX::Model::CreateFromCMO(
+		m_deviceResources->GetD3DDevice(),
+		L"Resources/Models/DOGA_Model1.cmo",
+		*factory
+	);
+	// ファイルを指定してモデルデータ読み込み
+	m_pModel3 = DirectX::Model::CreateFromCMO(
+		m_deviceResources->GetD3DDevice(),
+		L"Resources/Models/Fine_Sea2.cmo",
 		*factory
 	);
 	delete factory;
@@ -247,9 +259,21 @@ void Game::Render()
 	m_pGridFloor->draw(context, m_pDebugCamera->getViewMatrix(), m_projection);
 
 	{
-		Matrix world;
+		Matrix world = Matrix::CreateScale(Vector3::One * .05f);
 		// モデル描画
 		m_pModel->Draw(context, *m_pState.get(), world, m_pDebugCamera->getViewMatrix(), m_projection);
+	}
+
+	{
+		Matrix world = Matrix::CreateTranslation(Vector3::Right * 2) * Matrix::CreateScale(Vector3::One * 1.f);
+		// モデル描画
+		m_pModel2->Draw(context, *m_pState.get(), world, m_pDebugCamera->getViewMatrix(), m_projection);
+	}
+
+	{
+		Matrix world = Matrix::CreateScale(Vector3::One);
+		// モデル描画
+		m_pModel3->Draw(context, *m_pState.get(), world, m_pDebugCamera->getViewMatrix(), m_projection);
 	}
 
 	// --------------------------------------------------------------------------
