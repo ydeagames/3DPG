@@ -9,7 +9,7 @@
 
 #include "SpriteBatch.h"
 #include "SimpleMath.h"
-#include "Sprite2D.h"
+#include "GameObject.h"
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -51,10 +51,11 @@ private:
     void CreateWindowSizeDependentResources();
 
     // Device resources.
-    std::unique_ptr<DX::DeviceResources>    m_deviceResources;
+    std::unique_ptr<DX::DeviceResources>	m_deviceResources;
 
     // Rendering loop timer.
-    DX::StepTimer                           m_timer;
+    DX::StepTimer							m_timer;
 
-	Sprite2D sprite;
+	// ルートオブジェクト
+	std::unique_ptr<GameObject>				myGame;
 };

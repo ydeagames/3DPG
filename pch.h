@@ -49,6 +49,8 @@
 
 #include <stdio.h>
 
+#include <vector>
+
 #ifdef _DEBUG
 #include <dxgidebug.h>
 #endif

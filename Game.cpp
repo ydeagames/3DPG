@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
+#include "MyGame.h"
 
 #include <WICTextureLoader.h>
 
@@ -16,7 +17,7 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept(false)
 {
-    m_deviceResources = std::make_unique<DX::DeviceResources>();
+    m_deviceResources = std::make_unique<DR>();
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -54,12 +55,8 @@ void Game::Tick()
 // Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
-    float elapsedTime = float(timer.GetElapsedSeconds());
-
-    // TODO: Add your game logic here.
-    elapsedTime;
-
-	sprite.Update(timer);
+	// çXêV
+	myGame->Update(timer);
 }
 #pragma endregion
 
@@ -76,10 +73,9 @@ void Game::Render()
     Clear();
 
     m_deviceResources->PIXBeginEvent(L"Render");
-    auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
-	sprite.Draw();
+	myGame->Render();
 
     m_deviceResources->PIXEndEvent();
 
@@ -162,12 +158,10 @@ void Game::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void Game::CreateDeviceDependentResources()
 {
-    auto device = m_deviceResources->GetD3DDevice();
-
     // TODO: Initialize device dependent objects here (independent of window size).
-	auto context = m_deviceResources->GetD3DDeviceContext();
 
-	sprite.Create(device, context, L"slime.png");
+	// çÏê¨
+	myGame = std::make_unique<MyGame>();
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -180,7 +174,8 @@ void Game::OnDeviceLost()
 {
     // TODO: Add Direct3D resource cleanup here.
 
-	sprite.Reset();
+	// îjä¸
+	myGame = nullptr;
 }
 
 void Game::OnDeviceRestored()
