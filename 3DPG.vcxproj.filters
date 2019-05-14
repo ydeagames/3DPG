@@ -31,13 +31,13 @@
     <ClInclude Include="MyGame.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="DR.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectContainer.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContext.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
@@ -55,12 +55,6 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="MyGame.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DR.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectContainer.cpp">

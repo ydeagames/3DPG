@@ -13,7 +13,7 @@
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
-class Game : public DX::IDeviceNotify
+class Game : public DX::IDeviceNotify, public GameContext
 {
 public:
 
@@ -56,6 +56,28 @@ private:
     // Rendering loop timer.
     DX::StepTimer							m_timer;
 
+    // カメラオブジェクト
+    GameCamera								m_camera;
+
 	// ルートオブジェクト
 	std::unique_ptr<GameObject>				myGame;
+
+public:
+	// DeviceResource取得
+	DX::DeviceResources& GetDR()
+	{
+		return *m_deviceResources;
+	}
+
+	// タイマー取得
+	DX::StepTimer& GetTimer()
+	{
+		return m_timer;
+	}
+
+	// カメラ取得
+	GameCamera& GetCamera()
+	{
+		return m_camera;
+	}
 };

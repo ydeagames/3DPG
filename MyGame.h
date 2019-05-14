@@ -1,5 +1,4 @@
 #pragma once
-#include "StepTimer.h"
 #include "GameObjectContainer.h"
 
 // ゲームロジック

@@ -17,7 +17,7 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept(false)
 {
-    m_deviceResources = std::make_unique<DR>();
+    m_deviceResources = std::make_unique<DX::DeviceResources>();
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -56,7 +56,7 @@ void Game::Tick()
 void Game::Update(DX::StepTimer const& timer)
 {
 	// çXêV
-	myGame->Update(timer);
+	myGame->Update(*this);
 }
 #pragma endregion
 
@@ -75,7 +75,7 @@ void Game::Render()
     m_deviceResources->PIXBeginEvent(L"Render");
 
     // TODO: Add your rendering code here.
-	myGame->Render();
+	myGame->Render(*this);
 
     m_deviceResources->PIXEndEvent();
 
@@ -162,6 +162,7 @@ void Game::CreateDeviceDependentResources()
 
 	// çÏê¨
 	myGame = std::make_unique<MyGame>();
+	myGame->Initialize(*this);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -175,6 +176,7 @@ void Game::OnDeviceLost()
     // TODO: Add Direct3D resource cleanup here.
 
 	// îjä¸
+	myGame->Finalize(*this);
 	myGame = nullptr;
 }
 

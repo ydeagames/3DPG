@@ -1,14 +1,27 @@
 #include "pch.h"
 #include "GameObjectContainer.h"
 
-void GameObjectContainer::Update(DX::StepTimer const& timer)
+void GameObjectContainer::Initialize(GameContext& context)
 {
 	for (auto& object : gameObjects)
-		object->Update(timer);
+		object->Initialize(context);
 }
 
-void GameObjectContainer::Render()
+void GameObjectContainer::Update(GameContext& context)
 {
 	for (auto& object : gameObjects)
-		object->Render();
+		object->Update(context);
 }
+
+void GameObjectContainer::Render(GameContext& context)
+{
+	for (auto& object : gameObjects)
+		object->Render(context);
+}
+
+void GameObjectContainer::Finalize(GameContext& context)
+{
+	for (auto& object : gameObjects)
+		object->Finalize(context);
+}
+
