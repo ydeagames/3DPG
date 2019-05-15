@@ -6,6 +6,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
+// グリッド床
 class GridFloorWrapper : public GameObject
 {
 	// グリッド床
@@ -23,6 +24,7 @@ class GridFloorWrapper : public GameObject
 	}
 };
 
+// デバッグカメラ
 class DebugCameraWrapper : public GameObject
 {
 	// デバッグカメラ
@@ -41,6 +43,7 @@ class DebugCameraWrapper : public GameObject
 	}
 };
 
+// モデル
 class ModelObject : public GameObject
 {
 	// 名前
@@ -79,10 +82,10 @@ public:
 			DirectX::IEffectFog* fog = dynamic_cast<DirectX::IEffectFog*>(effect);
 			if (fog)
 			{
-			fog->SetFogEnabled(true);
-			fog->SetFogColor(DirectX::Colors::CornflowerBlue);
-			fog->SetFogStart(50.f);
-			fog->SetFogEnd(60.f);
+				fog->SetFogEnabled(true);
+				fog->SetFogColor(DirectX::Colors::CornflowerBlue);
+				fog->SetFogStart(50.f);
+				fog->SetFogEnd(60.f);
 			}
 			*/
 		});
@@ -91,10 +94,48 @@ public:
 	void Render(GameContext& context)
 	{
 		// モデルを描画する
-		m_model->Draw(context.GetDR().GetD3DDeviceContext(), context.GetStates(), transform.GetMMatrix(), context.GetCamera().view, context.GetCamera().projection);
+		m_model->Draw(
+			context.GetDR().GetD3DDeviceContext(),
+			context.GetStates(), transform.GetMMatrix(),
+			context.GetCamera().view,
+			context.GetCamera().projection,
+			false,
+			[&]() { context.GetDR().GetD3DDeviceContext()->OMSetBlendState(context.GetStates().AlphaBlend(), Colors::Black, 0xFFFFFFFF); });
 	}
 };
 
+// プリミティブ
+class GeometricObject : public GameObject
+{
+	// ジオメトリプリミティブ
+	std::function<std::unique_ptr<DirectX::GeometricPrimitive>(GameContext& context)> m_geometricPrimitiveGenerator;
+	// ジオメトリプリミティブ
+	std::unique_ptr<DirectX::GeometricPrimitive> m_pGeometricPrimitive;
+	// 色
+	Color m_color;
+
+public:
+	// コンストラクタ
+	GeometricObject(const std::function<std::unique_ptr<DirectX::GeometricPrimitive>(GameContext& context)>& generator, Color color = Color(DirectX::Colors::Gray))
+		: m_geometricPrimitiveGenerator(generator)
+		, m_color(color)
+	{
+	}
+	// 生成
+	void Initialize(GameContext& context)
+	{
+		// ジオメトリ作成
+		m_pGeometricPrimitive = m_geometricPrimitiveGenerator(context);
+	}
+	// 描画
+	void Render(GameContext& context)
+	{
+		// ジオメトリ描画
+		m_pGeometricPrimitive->Draw(transform.GetMMatrix(), context.GetCamera().view, context.GetCamera().projection, m_color);
+	}
+};
+
+// モデルコントロール
 class ModelObjectControl : public ModelObject
 {
 public:
@@ -107,31 +148,74 @@ public:
 	void Update(GameContext& context)
 	{
 		auto kb = Keyboard::Get().GetState();
+		float speed = -.1f;
 		if (kb.A)
-			transform.SetPosition(transform.GetPosition() + Vector3::Left);
+			transform.SetPosition(transform.GetPosition() + Vector3::Left * speed);
 		if (kb.D)
-			transform.SetPosition(transform.GetPosition() + Vector3::Right);
+			transform.SetPosition(transform.GetPosition() + Vector3::Right * speed);
 		if (kb.W)
-			transform.SetPosition(transform.GetPosition() + Vector3::Forward);
+			transform.SetPosition(transform.GetPosition() + Vector3::Forward * speed);
 		if (kb.S)
-			transform.SetPosition(transform.GetPosition() + Vector3::Backward);
+			transform.SetPosition(transform.GetPosition() + Vector3::Backward * speed);
 	};
+};
+
+// ビット
+class BitObject : public GeometricObject
+{
+	Transform* m_base;
+
+public:
+	BitObject(const std::function<std::unique_ptr<DirectX::GeometricPrimitive>(GameContext& context)>& generator, Color color, Transform* base)
+		: GeometricObject(generator, color)
+		, m_base(base)
+	{
+	}
+	// 更新
+	void Update(GameContext& context)
+	{
+		float time = static_cast<float>(context.GetTimer().GetTotalSeconds());
+		transform.LocalEulerAngles.z = time;
+		transform.LocalPosition = Vector3::Transform(Vector3::Down, Matrix::CreateTranslation(Vector3::Down * .8f) * Matrix::CreateRotationZ(time));
+	}
 };
 
 // 生成
 void MyGame::Initialize(GameContext & context)
 {
-	// ビュー行列を算出する
+	// 初期のビュー行列を算出する
 	SimpleMath::Vector3 eye(0.0f, 0.0f, 10.0f);
 	SimpleMath::Vector3 target(0.0f, 0.0f, 0.0f);
 	SimpleMath::Vector3 up(0.0f, 1.0f, 0.0f);
 	context.GetCamera().view = SimpleMath::Matrix::CreateLookAt(eye, target, up);
 
-	gameObjects.emplace_back(std::move(std::unique_ptr<GridFloorWrapper>(new GridFloorWrapper())));
+	// グリッドフロア
+	//gameObjects.emplace_back(std::move(std::unique_ptr<GridFloorWrapper>(new GridFloorWrapper())));
+	// デバッグカメラ
 	gameObjects.emplace_back(std::move(std::unique_ptr<DebugCameraWrapper>(new DebugCameraWrapper())));
-	gameObjects.emplace_back(std::move(std::unique_ptr<ModelObjectControl>(new ModelObjectControl(L"Resources/Models/plane.cmo"))));
+	// 天球
 	gameObjects.emplace_back(std::move(std::unique_ptr<ModelObject>(new ModelObject(L"Resources/Models/skydoom.cmo"))));
+	// 床
 	gameObjects.emplace_back(std::move(std::unique_ptr<ModelObject>(new ModelObject(L"Resources/Models/floor.cmo"))));
 
+	// 飛行機
+	auto plane = std::unique_ptr<ModelObjectControl>(new ModelObjectControl(L"Resources/Models/plane.cmo"));
+	plane->transform.LocalPosition += Vector3::Up * 1;
+	gameObjects.emplace_back(std::move(plane));
+	Transform* t = &gameObjects.back()->transform;
+
+	// 影
+	auto shadow = std::unique_ptr<ModelObjectControl>(new ModelObjectControl(L"Resources/Models/shadow.cmo"));
+	shadow->transform.LocalPosition += Vector3::Up * .01f;
+	shadow->transform.LocalScale *= Vector3::One * 3;
+	gameObjects.emplace_back(std::move(shadow));
+
+	// ビット
+	auto bit = std::unique_ptr<BitObject>(new BitObject([](GameContext& context) { return GeometricPrimitive::CreateCone(context.GetDR().GetD3DDeviceContext()); }, Color(Colors::Blue), &plane->transform));
+	bit->transform.Parent = t;
+	bit->transform.LocalScale = Vector3::One * .2f;
+	gameObjects.emplace_back(std::move(bit));
+
+	// 初期化
 	GameObjectContainer::Initialize(context);
 }
