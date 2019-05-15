@@ -169,6 +169,19 @@ void Game::CreateDeviceDependentResources()
 void Game::CreateWindowSizeDependentResources()
 {
     // TODO: Initialize windows-size dependent objects here.
+
+	// ウインドウサイズからアスペクト比を算出する
+	RECT size = m_deviceResources->GetOutputSize();
+	float aspectRatio = float(size.right) / float(size.bottom);
+	// 画角を設定
+	float fovAngleY = XMConvertToRadians(45.0f);
+	// 射影行列を作成する
+	GetCamera().projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+		fovAngleY,
+		aspectRatio,
+		0.01f,
+		100.0f
+	);
 }
 
 void Game::OnDeviceLost()

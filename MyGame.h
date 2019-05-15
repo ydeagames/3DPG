@@ -6,8 +6,6 @@ class MyGame : public GameObjectContainer
 {
 public:
 	// ê∂ê¨
-	MyGame();
-	// îjä¸
-	~MyGame();
+	void Initialize(GameContext& context);
 };
 

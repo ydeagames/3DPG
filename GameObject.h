@@ -1,9 +1,13 @@
 #pragma once
 #include "GameContext.h"
+#include "Transform.h"
 
 // ゲームオブジェクト
 class GameObject
 {
+public:
+	Transform transform;
+
 public:
 	GameObject() = default;
 	virtual ~GameObject() = default;

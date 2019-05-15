@@ -1,7 +1,6 @@
 #pragma once
 #include "StepTimer.h"
 #include "DeviceResources.h"
-#include <SimpleMath.h>
 
 // カメラ取得
 class GameCamera
@@ -14,15 +13,18 @@ public:
 };
 
 // GameContextインターフェイス
-// 今回はVC++固有仕様の__interfaceを使ってみた。(学校としてどうなのかは不明)
-__interface GameContext
+class GameContext
 {
 public:
+	GameContext() = default;
+	virtual ~GameContext() = default;
+
+public:
 	// DeviceResource取得
-	DX::DeviceResources& GetDR();
+	virtual DX::DeviceResources& GetDR() = 0;
 	// タイマー取得
-	DX::StepTimer& GetTimer();
+	virtual DX::StepTimer& GetTimer() = 0;
 	// カメラ取得
-	GameCamera& GetCamera();
+	virtual GameCamera& GetCamera() = 0;
 };
 
