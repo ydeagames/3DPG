@@ -36,9 +36,16 @@ void Game::Initialize(HWND window, int width, int height)
     m_deviceResources->SetWindow(window, width, height);
 
     m_deviceResources->CreateDeviceResources();
-    CreateDeviceDependentResources();
-
     m_deviceResources->CreateWindowSizeDependentResources();
+
+	// コモンステートを作成する
+	m_state = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
+	// EffectFactoryオブジェクトを生成する
+	m_effectFactory = std::make_unique<DirectX::EffectFactory>(m_deviceResources->GetD3DDevice());
+	// テクスチャの読み込みパス指定
+	m_effectFactory->SetDirectory(L"Resources/Models");
+
+    CreateDeviceDependentResources();
     CreateWindowSizeDependentResources();
 
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
@@ -173,8 +180,6 @@ void Game::GetDefaultSize(int& width, int& height) const
 void Game::CreateDeviceDependentResources()
 {
     // TODO: Initialize device dependent objects here (independent of window size).
-	// コモンステートを作成する
-	m_state = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
 
 	// 作成
 	myGame = std::make_unique<MyGame>();

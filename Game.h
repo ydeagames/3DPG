@@ -64,6 +64,9 @@ private:
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates>	m_state;
 	
+	// エフェクトファクトリー
+	std::unique_ptr<DirectX::EffectFactory>	m_effectFactory;
+	
 	// ルートオブジェクト
 	std::unique_ptr<GameObject>				myGame;
 
@@ -96,5 +99,11 @@ public:
 	DirectX::CommonStates& GetStates()
 	{
 		return *m_state;
+	}
+
+	// コモンステート
+	DirectX::EffectFactory& GetEffectFactory()
+	{
+		return *m_effectFactory;
 	}
 };

@@ -2,17 +2,20 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>b151718f-4ff2-45e7-b431-86748886ac13</UniqueIdentifier>
+      <UniqueIdentifier>6c9334a1-c09e-4936-9def-03963daf9051</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>7cef37a7-c614-470d-a1bd-ec45b3120d4e</UniqueIdentifier>
+      <UniqueIdentifier>af612c47-31c2-4c3b-8cd3-cd3b372782e2</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{2b8f45e4-56cb-4b27-b763-b93be80600b4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Base">
-      <UniqueIdentifier>{a63797d9-c4a0-4bdf-bf28-048023b45e28}</UniqueIdentifier>
+      <UniqueIdentifier>{1ff3ac95-a561-4b32-a0e9-8c89f7fdedd0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game">
-      <UniqueIdentifier>{7f9fbedd-1a77-435a-acb4-62b8be0b2240}</UniqueIdentifier>
+      <UniqueIdentifier>{53eade71-ba8b-49ad-b27b-1f329793c810}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -22,13 +25,19 @@
     <ClInclude Include="DeviceResources.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="DebugCamera.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="GridFloor.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="MyGame.h">
+    <ClInclude Include="GameContext.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
@@ -37,22 +46,22 @@
     <ClInclude Include="GameObjectContainer.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameContext.h">
+    <ClInclude Include="MyGame.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugCamera.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GridFloor.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCamera.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GridFloor.cpp">
+      <Filter>Debug</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Base</Filter>
@@ -63,19 +72,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="MyGame.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectContainer.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="MyGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugCamera.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GridFloor.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -91,21 +94,21 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">
-      <Filter>Base</Filter>
+      <Filter>Assets</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="plane.FBX">
+    <MeshContentTask Include="shadow.FBX">
       <Filter>Assets</Filter>
-    </None>
-    <None Include="shadow.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="skydoom.FBX">
       <Filter>Assets</Filter>
-    </None>
-    <None Include="skydoom.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="floor.FBX">
       <Filter>Assets</Filter>
-    </None>
-    <None Include="floor.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="plane.FBX">
       <Filter>Assets</Filter>
-    </None>
+    </MeshContentTask>
   </ItemGroup>
 </Project>

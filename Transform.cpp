@@ -4,6 +4,8 @@
 // コンストラクタ
 Transform::Transform()
 	: Parent(nullptr)
+	, LocalPosition(DirectX::SimpleMath::Vector3(0.f, 0.f, 0.f))
+	, LocalEulerAngles(DirectX::SimpleMath::Vector3(0.f, 0.f, 0.f))
 	, LocalScale(DirectX::SimpleMath::Vector3(1.f, 1.f, 1.f))
 {
 }
@@ -61,10 +63,5 @@ DirectX::SimpleMath::Matrix Transform::GetLocalRotateMatrix() const
 // 行列取得
 DirectX::SimpleMath::Matrix Transform::GetLocalPositionMatrix() const
 {
-	auto localPositionMatrix = DirectX::SimpleMath::Matrix::Identity;
-	localPositionMatrix._31 = LocalPosition.x;
-	localPositionMatrix._32 = LocalPosition.y;
-	localPositionMatrix._33 = LocalPosition.z;
-	localPositionMatrix._34 = 1.f;
-	return localPositionMatrix;
+	return DirectX::SimpleMath::Matrix::CreateTranslation(LocalPosition);
 }

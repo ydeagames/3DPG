@@ -28,5 +28,6 @@ public:
 	virtual GameCamera& GetCamera() = 0;
 	// コモンステート取得
 	virtual DirectX::CommonStates& GetStates() = 0;
+	// エフェクトファクトリー取得
+	virtual DirectX::EffectFactory& GetEffectFactory() = 0;
 };
-
