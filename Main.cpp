@@ -71,7 +71,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         wcex.hIcon = LoadIconW(hInstance, L"IDI_ICON");
         wcex.hCursor = LoadCursorW(nullptr, IDC_ARROW);
         wcex.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
-        wcex.lpszClassName = L"_3DPGWindowClass";
+        wcex.lpszClassName = L"_3DPGQuestionWindowClass";
         wcex.hIconSm = LoadIconW(wcex.hInstance, L"IDI_ICON");
         if (!RegisterClassExW(&wcex))
             return 1;
@@ -84,10 +84,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-        HWND hwnd = CreateWindowExW(0, L"_3DPGWindowClass", L"3DPG", WS_OVERLAPPEDWINDOW,
+        HWND hwnd = CreateWindowExW(0, L"_3DPGQuestionWindowClass", L"3DPGQuestion", WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
-        // TODO: Change to CreateWindowExW(WS_EX_TOPMOST, L"_3DPGWindowClass", L"3DPG", WS_POPUP,
+        // TODO: Change to CreateWindowExW(WS_EX_TOPMOST, L"_3DPGQuestionWindowClass", L"3DPGQuestion", WS_POPUP,
         // to default to fullscreen.
 
         if (!hwnd)

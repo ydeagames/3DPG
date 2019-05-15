@@ -17,6 +17,7 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept(false)
 {
+	// デバイスリソース初期化
     m_deviceResources = std::make_unique<DX::DeviceResources>();
     m_deviceResources->RegisterDeviceNotify(this);
 }
@@ -24,6 +25,14 @@ Game::Game() noexcept(false)
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+	// マウスの作成
+	m_pMouse = std::make_unique<Mouse>();
+	m_pMouse->SetWindow(window);
+
+	// キーボードの作成
+	m_pKeyboard = std::make_unique<Keyboard>();
+
+	// 設定
     m_deviceResources->SetWindow(window, width, height);
 
     m_deviceResources->CreateDeviceResources();
@@ -44,11 +53,13 @@ void Game::Initialize(HWND window, int width, int height)
 // Executes the basic game loop.
 void Game::Tick()
 {
+	// 毎チック処理
     m_timer.Tick([&]()
     {
         Update(m_timer);
     });
 
+	// 描画
     Render();
 }
 
@@ -70,13 +81,16 @@ void Game::Render()
         return;
     }
 
+	// クリア
     Clear();
 
+	// ここから描画
     m_deviceResources->PIXBeginEvent(L"Render");
 
     // TODO: Add your rendering code here.
 	myGame->Render(*this);
 
+	// ここまで描画
     m_deviceResources->PIXEndEvent();
 
     // Show the new frame.
@@ -159,6 +173,7 @@ void Game::GetDefaultSize(int& width, int& height) const
 void Game::CreateDeviceDependentResources()
 {
     // TODO: Initialize device dependent objects here (independent of window size).
+	// コモンステートを作成する
 	m_state = std::make_unique<CommonStates>(m_deviceResources->GetD3DDevice());
 
 	// 作成
@@ -181,7 +196,7 @@ void Game::CreateWindowSizeDependentResources()
 		fovAngleY,
 		aspectRatio,
 		0.01f,
-		100.0f
+		10000.0f
 	);
 }
 

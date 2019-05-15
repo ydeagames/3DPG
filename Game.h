@@ -6,6 +6,8 @@
 
 #include "DeviceResources.h"
 #include "StepTimer.h"
+#include "Mouse.h"
+#include "Keyboard.h"
 
 #include "SpriteBatch.h"
 #include "SimpleMath.h"
@@ -64,6 +66,12 @@ private:
 	
 	// ルートオブジェクト
 	std::unique_ptr<GameObject>				myGame;
+
+	// マウス
+	std::unique_ptr<DirectX::Mouse>			m_pMouse;
+
+	// キーボード
+	std::unique_ptr<DirectX::Keyboard>		m_pKeyboard;
 
 public:
 	// DeviceResource取得
