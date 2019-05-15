@@ -56,9 +56,12 @@ private:
     // Rendering loop timer.
     DX::StepTimer							m_timer;
 
-    // カメラオブジェクト
+	// カメラオブジェクト
     GameCamera								m_camera;
 
+	// コモンステート
+	std::unique_ptr<DirectX::CommonStates>	m_state;
+	
 	// ルートオブジェクト
 	std::unique_ptr<GameObject>				myGame;
 
@@ -79,5 +82,11 @@ public:
 	GameCamera& GetCamera()
 	{
 		return m_camera;
+	}
+
+	// コモンステート
+	DirectX::CommonStates& GetStates()
+	{
+		return *m_state;
 	}
 };

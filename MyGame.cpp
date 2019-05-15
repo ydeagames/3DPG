@@ -14,4 +14,29 @@ void MyGame::Initialize(GameContext & context)
 	context.GetCamera().view = SimpleMath::Matrix::CreateLookAt(eye, target, up);
 
 	GameObjectContainer::Initialize(context);
+
+	class ObjA : public GameObject
+	{
+
+		// ê∂ê¨
+		void Initialize(GameContext& context)
+		{
+
+		}
+		// çXêV
+		void Update(GameContext& context)
+		{
+
+		}
+		// ï`âÊ
+		void Render(GameContext& context)
+		{
+
+		}
+		// îjä¸
+		void Finalize(GameContext& context)
+		{
+
+		}
+	};
 }

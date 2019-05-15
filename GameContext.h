@@ -26,5 +26,7 @@ public:
 	virtual DX::StepTimer& GetTimer() = 0;
 	// カメラ取得
 	virtual GameCamera& GetCamera() = 0;
+	// コモンステート取得
+	virtual DirectX::CommonStates& GetStates() = 0;
 };
 
