@@ -6,7 +6,6 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-// グリッド床
 class GridFloorWrapper : public GameObject
 {
 	// グリッド床
@@ -24,7 +23,6 @@ class GridFloorWrapper : public GameObject
 	}
 };
 
-// デバッグカメラ
 class DebugCameraWrapper : public GameObject
 {
 	// デバッグカメラ
@@ -43,7 +41,6 @@ class DebugCameraWrapper : public GameObject
 	}
 };
 
-// モデル
 class ModelObject : public GameObject
 {
 	// 名前
@@ -104,7 +101,6 @@ public:
 	}
 };
 
-// プリミティブ
 class GeometricObject : public GameObject
 {
 	// ジオメトリプリミティブ
@@ -135,7 +131,6 @@ public:
 	}
 };
 
-// モデルコントロール
 class ModelObjectControl : public ModelObject
 {
 public:
@@ -160,62 +155,32 @@ public:
 	};
 };
 
-// ビット
-class BitObject : public GeometricObject
-{
-	Transform* m_base;
-
-public:
-	BitObject(const std::function<std::unique_ptr<DirectX::GeometricPrimitive>(GameContext& context)>& generator, Color color, Transform* base)
-		: GeometricObject(generator, color)
-		, m_base(base)
-	{
-	}
-	// 更新
-	void Update(GameContext& context)
-	{
-		float time = static_cast<float>(context.GetTimer().GetTotalSeconds());
-		transform.LocalEulerAngles.z = time;
-		transform.LocalPosition = Vector3::Transform(Vector3::Down, Matrix::CreateTranslation(Vector3::Down * .8f) * Matrix::CreateRotationZ(time));
-	}
-};
-
 // 生成
 void MyGame::Initialize(GameContext & context)
 {
-	// 初期のビュー行列を算出する
+	// ビュー行列を算出する
 	SimpleMath::Vector3 eye(0.0f, 0.0f, 10.0f);
 	SimpleMath::Vector3 target(0.0f, 0.0f, 0.0f);
 	SimpleMath::Vector3 up(0.0f, 1.0f, 0.0f);
 	context.GetCamera().view = SimpleMath::Matrix::CreateLookAt(eye, target, up);
 
-	// グリッドフロア
-	//gameObjects.emplace_back(std::move(std::unique_ptr<GridFloorWrapper>(new GridFloorWrapper())));
-	// デバッグカメラ
+	gameObjects.emplace_back(std::move(std::unique_ptr<GridFloorWrapper>(new GridFloorWrapper())));
 	gameObjects.emplace_back(std::move(std::unique_ptr<DebugCameraWrapper>(new DebugCameraWrapper())));
-	// 天球
 	gameObjects.emplace_back(std::move(std::unique_ptr<ModelObject>(new ModelObject(L"Resources/Models/skydoom.cmo"))));
-	// 床
 	gameObjects.emplace_back(std::move(std::unique_ptr<ModelObject>(new ModelObject(L"Resources/Models/floor.cmo"))));
 
-	// 飛行機
 	auto plane = std::unique_ptr<ModelObjectControl>(new ModelObjectControl(L"Resources/Models/plane.cmo"));
 	plane->transform.LocalPosition += Vector3::Up * 1;
 	gameObjects.emplace_back(std::move(plane));
-	Transform* t = &gameObjects.back()->transform;
 
-	// 影
 	auto shadow = std::unique_ptr<ModelObjectControl>(new ModelObjectControl(L"Resources/Models/shadow.cmo"));
 	shadow->transform.LocalPosition += Vector3::Up * .01f;
 	shadow->transform.LocalScale *= Vector3::One * 3;
 	gameObjects.emplace_back(std::move(shadow));
 
-	// ビット
-	auto bit = std::unique_ptr<BitObject>(new BitObject([](GameContext& context) { return GeometricPrimitive::CreateCone(context.GetDR().GetD3DDeviceContext()); }, Color(Colors::Blue), &plane->transform));
-	bit->transform.Parent = t;
+	auto bit = std::unique_ptr<GeometricObject>(new GeometricObject([](GameContext& context) { return GeometricPrimitive::CreateCone(context.GetDR().GetD3DDeviceContext()); }, Color(Colors::Blue)));
 	bit->transform.LocalScale = Vector3::One * .2f;
 	gameObjects.emplace_back(std::move(bit));
 
-	// 初期化
 	GameObjectContainer::Initialize(context);
 }
